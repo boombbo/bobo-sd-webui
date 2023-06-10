@@ -1,0 +1,81 @@
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+namespace Microsoft.ApplicationModel.Activation
+{
+    enum ExtendedActivationKind
+    {
+        Launch = 0,
+        Search,
+        ShareTarget,
+        File,
+        Protocol,
+        FileOpenPicker,
+        FileSavePicker,
+        CachedFileUpdater,
+        ContactPicker,
+        Device,
+        PrintTaskSettings,
+        CameraSettings,
+        RestrictedLaunch,
+        AppointmentsProvider,
+        Contact,
+        LockScreenCall,
+        VoiceCommand,
+        LockScreen,
+        PickerReturned = 1000,
+        WalletAction,
+        PickFileContinuation,
+        PickSaveFileContinuation,
+        PickFolderContinuation,
+        WebAuthenticationBrokerContinuation,
+        WebAccountProvider,
+        ComponentUI,
+        ProtocolForResults = 1009,
+        ToastNotification,
+        Print3DWorkflow,
+        DialReceiver,
+        DevicePairing,
+        UserDataAccountsProvider,
+        FilePickerExperience,
+        LockScreenComponent,
+        ContactPanel,
+        PrintWorkflowForegroundTask,
+        GameUIProvider,
+        StartupTask,
+        CommandLineLaunch,
+        BarcodeScannerProvider,
+        PrintSupportJobUI,
+        PrintSupportSettingsUI,
+        PhoneCallActivation,
+        VpnForeground,
+        Push,
+        ExtensionBase = 5000,
+    };
+
+    runtimeclass ActivationArguments
+    {
+        ExtendedActivationKind Kind { get; };
+        IInspectable Data{ get; };
+    };
+
+    static runtimeclass AppLifecycle
+    {
+        static Windows.ApplicationModel.Activation.IActivatedEventArgs GetActivatedEventArgs();
+
+        static Microsoft.ApplicationModel.Activation.ActivationArguments GetActivatedEventArgs2();
+    }
+
+    static runtimeclass ActivationRegistrationManager
+    {
+        static void RegisterForFileTypeActivation(String[] supportedFileTypes, String logo,
+            String displayName, String[] supportedVerbs, String exePath);
+        static void RegisterForProtocolActivation(String scheme, String logo, String displayName,
+            String exePath);
+        static void RegisterForStartupActivation(String taskId, String exePath);
+
+        static void UnregisterForFileTypeActivation(String[] fileTypes, String exePath);
+        static void UnregisterForProtocolActivation(String scheme, String exePath);
+        static void UnregisterForStartupActivation(String taskId);
+    };
+}
