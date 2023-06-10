@@ -1,0 +1,13 @@
+parameters:
+  channel: 'experimental'
+  enableLicenseInstall: false
+
+steps:
+  - template: WindowsAppSDK-BuildProject-Steps.yml
+    parameters:
+      solutionPath: WindowsAppRuntime.sln
+      nugetConfigPath: $(NugetConfigFile)
+      buildOutputDir: $(buildOutputDir)
+      publishDir: $(publishDir)
+      channel: ${{ parameters.channel }}
+      enableLicenseInstall: ${{ parameters.enableLicenseInstall }}
