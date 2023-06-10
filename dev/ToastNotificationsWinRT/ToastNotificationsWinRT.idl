@@ -1,0 +1,65 @@
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+namespace Microsoft.ToastNotificationsWinRt
+{
+    [contractversion(1.0)]
+    apicontract NotificationsContract { };
+
+    runtimeclass DesktopToastNotificationManagerCompat;
+    runtimeclass ToastActivatedEventArgs;
+    runtimeclass ToastNotificationManagerInterop;
+    runtimeclass ToastNotificationActivatedEventArgsInterop;
+    runtimeclass ToastNotificationHistoryInterop;
+
+    [contract(NotificationsContract, 1.0)]
+    [marshaling_behavior(standard)]
+    runtimeclass ToastActivatedEventArgs
+    {
+        ToastActivatedEventArgs(String appId, String arguments, Windows.Foundation.Collections.IMap<String, String> userInput);
+        String Arguments { get; };
+        String AppId { get; };
+        Windows.Foundation.Collections.IMap<String, String> UserInput { get; };
+    }
+
+    [contract(NotificationsContract, 1.0)]
+    [marshaling_behavior(standard)]
+    static runtimeclass DesktopToastNotificationManagerCompat
+    {
+        static void RegisterApplication(String clsid, String appId, String displayName, String iconPath);
+        static Boolean WasProcessToastActivated{ get; };
+        static event Windows.Foundation.EventHandler<ToastActivatedEventArgs> ToastActivated;
+    }
+
+    [contract(NotificationsContract, 1.0)]
+    [marshaling_behavior(standard)]
+    runtimeclass ToastNotificationActivatedEventArgsInterop
+    {
+        String Argument { get; };
+        Windows.Foundation.Collections.IMap<String, String> UserInput { get; };
+    }
+
+    [contract(NotificationsContract, 1.0)]
+    [marshaling_behavior(standard)]
+    runtimeclass ToastNotificationHistoryInterop
+    {
+        void Clear();
+        Windows.Foundation.Collections.IVector<Windows.UI.Notifications.ToastNotification> GetHistory();
+        void Remove(String tag);
+        void Remove(String tag, String group);
+        void RemoveGroup(String group);
+    }
+
+
+    [contract(NotificationsContract, 1.0)]
+    [marshaling_behavior(standard)]
+    static runtimeclass ToastNotificationManagerInterop
+    {
+        static Boolean WasProcessToastActivated{ get; };
+        static event Windows.Foundation.EventHandler<ToastNotificationActivatedEventArgsInterop> OnActivated;
+        static Windows.UI.Notifications.ToastNotifier CreateToastNotifier();
+        static Windows.UI.Notifications.ToastCollectionManager GetToastCollectionManager();
+        static Windows.Foundation.IAsyncOperation<Windows.UI.Notifications.ToastNotifier> CreateToastNotifierForToastCollectionAsync(String collectionId);
+        static Windows.Foundation.IAsyncOperation<ToastNotificationHistoryInterop> GetHistoryForToastCollectionAsync(String collectionId);
+    }
+}
