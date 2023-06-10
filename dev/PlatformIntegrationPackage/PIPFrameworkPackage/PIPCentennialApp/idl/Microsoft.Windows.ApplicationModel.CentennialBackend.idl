@@ -1,0 +1,63 @@
+﻿//  Copyright (c) Microsoft Corporation. All rights reserved.
+//
+//  WindowsRuntimeAPISet
+
+//   TODO: determine contract version
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+import "Inspectable.idl";
+
+/**/
+import "Windows.Foundation.idl";
+
+namespace Microsoft
+{
+    namespace Windows
+{
+        namespace ApplicationModel
+{
+        /*
+    [contractversion(1.0)]
+    apicontract CentennialBackendContract{};
+*/
+
+    // ================================================================================================================================
+    // FORWARD DECLARATIONS
+
+    interface ICentennialBackend;
+    runtimeclass CentennialBackend;
+
+    // --------------------------------------------------------------------------------------------------------------------------------
+    [uuid(46f8b72a-f777-4d65-81f0-7efa644ff6a7)]
+    [exclusiveto(CentennialBackend)]
+    // [contract(CentennialBackendContract, 1.0)]
+    [contract(Windows.Foundation.UniversalApiContract, 10)]
+    interface ICentennialBackend : IInspectable
+    {
+        HRESULT Initialize();
+        HRESULT Uninitialize();
+
+        HRESULT OnLaunch(
+            [out] BOOL* activatedByAumid);
+
+        HRESULT LogErrorMsg(
+            [in] HSTRING msg,
+            [in] HRESULT hr);
+    }
+
+    // --------------------------------------------------------------------------------------------------------------------------------
+    [
+        marshaling_behavior(agile),
+        threading(mta)
+    ]
+    // [contract(CentennialBackendContract, 1.0)]
+    [contract(Windows.Foundation.UniversalApiContract, 10)]
+    runtimeclass CentennialBackend
+    {
+        [default] interface ICentennialBackend;
+    }
+}
+}
+}
