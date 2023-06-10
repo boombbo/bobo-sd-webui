@@ -1,0 +1,8 @@
+﻿namespace winui_desktop_packaged_app_cpp
+{
+    [default_interface]
+    runtimeclass MainWindow : Microsoft.UI.Xaml.Window
+    {
+        MainWindow();
+    }
+}
