@@ -1,0 +1,33 @@
+parameters:
+  appxInputDir: '$(Build.SourcesDirectory)\AppXContents'
+  appxOutputDir: '$(Build.ArtifactStagingDirectory)\appx'
+
+steps:
+  - powershell: |
+      $platforms = @("x86", "x64", "arm", "arm64")
+      $configs = @("release")
+      Write-Host "powershell step in ProjectReunion-MakeFrameworkPackages-Steps.yml - rootPath = $rootPath"
+      foreach ($platform in $platforms)
+      {
+        Write-Host "Checking win10-$platform"
+        foreach ($config in $configs)
+        {
+          Write-Host "Checking $config"
+          $appxInputDir = "${{ parameters.appxInputDir }}"
+          $appxOutputDir = "${{ parameters.appxOutputDir }}"
+          Write-Host ""
+          Write-Host "Checking for $rootPath\runtimes\win10-$platform\native\MRM.dll"
+          Write-Host ""
+          if (Test-Path "$rootPath\runtimes\win10-$platform\native\MRM.dll")
+          {
+            $env:APPXINPUT_OVERRIDE = $rootPath
+            $env:APPXOUTPUT_OVERRIDE = $rootPath
+            & $env:Build_SourcesDirectory\tools\MakeAppxHelper.cmd $platform $config -builddate_yymm $env:BUILDDATE_YYMM -builddate_dd $env:BUILDDATE_DD -subversion $env:BUILDREVISION -verbose
+            if ($lastexitcode -ne 0) {
+                Write-Host ##vso[task.logissue type=error;] Make AppxHelper $platform $config failed with exit code $lastexitcode
+                Exit 1
+            }
+          }
+        }
+      }
+    displayName: 'Make FrameworkPackages'
