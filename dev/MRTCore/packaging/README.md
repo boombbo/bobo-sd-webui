@@ -1,0 +1,2 @@
+Microsoft.WindowsApp.Resources.targets generates PRIs in unpackaged app projects and unpackaged library projects.
+Microsoft.WindowsApp.Resources.targets consists of some of the targets from the in-box file Microsoft.AppxPackage.Targets, with a few modified slightly.
